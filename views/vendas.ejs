@@ -1,0 +1,49 @@
+<h1>Cadastro de Vendas</h1>
+<form action="/vendas/criar" method="POST">
+    <label for="livro_id">Livro ID:</label>
+    <input type="number" id="livro_id" name="livro_id" required>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" name="quantidade" required>
+
+    <label for="preco">Preço:</label>
+    <input type="number" id="preco" name="preco" step="0.01" required>
+
+    <label for="data_venda">Data da Venda:</label>
+    <input type="date" id="data_venda" name="data_venda" required>
+
+    <button type="submit">Criar Venda</button>
+</form>
+
+<h2>Vendas Cadastradas</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Livro ID</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Data da Venda</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (vendas && vendas.length > 0) { %>
+            <% vendas.forEach(venda => { %>
+                <tr>
+                    <td><%= venda.id %></td>
+                    <td><%= venda.id_livro %></td>
+                    <td><%= venda.qtd %></td>
+                    <td><%= venda.preco %></td>
+                    <td><%= venda.data_venda %></td>
+                    <td>
+                        <a href="/vendas/editar/<%= venda.id %>">Editar</a> |
+                        <a href="/vendas/deletar/<%= venda.id %>">Deletar</a>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr><td colspan="6">Nenhuma venda registrada.</td></tr>
+        <% } %>
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Suas Mensagens</h2>
+{% if messages %}
+    <ul class="list-group">
+        {% for message in messages %}
+            <li class="list-group-item">
+                <strong>{{ message['sender'] }}</strong>: {{ message['message'] }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Você não enviou nenhuma mensagem ainda.</p>
+{% endif %}
+{% endblock %}

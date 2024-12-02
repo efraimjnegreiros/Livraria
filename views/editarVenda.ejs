@@ -1,0 +1,16 @@
+<h1>Editar Venda</h1>
+<form action="/vendas/editar/<%= venda.id %>" method="POST">
+    <label for="livro_id">Livro ID:</label>
+    <input type="number" id="livro_id" name="livro_id" value="<%= venda.id_livro %>" required>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" name="quantidade" min="1" value="<%= venda.qtd %>" required>
+
+    <label for="preco">Preço:</label>
+    <input type="number" id="preco" name="preco" step="0.01" min="0" value="<%= venda.preco %>" required>
+
+    <label for="data_venda">Data da Venda:</label>
+    <input type="date" id="data_venda" name="data_venda" value="<%= venda.data_venda %>" required>
+
+    <button type="submit">Salvar Alterações</button>
+</form>

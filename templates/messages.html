@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensagens</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost:5000');
+        
+        // Entrar na sala de chat com o e-mail do usuário
+        socket.emit('join_room', '{{ session["user"] }}');
+
+        // Enviar mensagem
+        function sendMessage() {
+            var message = document.getElementById("message").value;
+            var receiver = "{{ funcionario_email }}";  // e-mail do funcionário que está atendendo
+
+            socket.emit('send_message', {
+                sender: '{{ session["user"] }}',
+                receiver: receiver,
+                message: message
+            });
+
+            document.getElementById("message").value = ''; // Limpar campo de texto
+        }
+
+        // Receber mensagem
+        socket.on('receive_message', function(data) {
+            var messageElement = document.createElement("div");
+            messageElement.innerHTML = "<strong>" + data.sender + ":</strong> " + data.message;
+            document.getElementById("chat").appendChild(messageElement);
+        });
+    </script>
+</head>
+<body>
+    <h2>Chat com o Funcionário</h2>
+    <div id="chat">
+        {% for msg in messages %}
+            <div><strong>{{ msg.sender_id }}</strong>: {{ msg.response }}</div>
+        {% endfor %}
+    </div>
+
+    <textarea id="message"></textarea>
+    <button onclick="sendMessage()">Enviar</button>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Contato com Funcionário</h2>
+<form method="POST">
+    <div class="form-group">
+        <label for="message">Mensagem</label>
+        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+</form>
+{% endblock %}

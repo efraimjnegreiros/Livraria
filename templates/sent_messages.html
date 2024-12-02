@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2 class="my-4">Mensagens Enviadas</h2>
+
+<div class="list-group">
+    {% for message in messages %}
+        <div class="list-group-item">
+            <strong>Cliente:</strong> {{ message.receiver_id }}<br>
+            <strong>Mensagem:</strong> {{ message.message }}<br>
+            <a href="{{ url_for('reply_message', message_id=message.id) }}" class="btn btn-primary mt-2">Responder</a>
+        </div>
+    {% else %}
+        <p>Você ainda não enviou mensagens.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

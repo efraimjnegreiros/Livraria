@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.min.js"></script>
+    <script>
+        // Conectar ao servidor Socket.IO
+        const socket = io();
+
+        // Função para enviar mensagens
+        function sendMessage() {
+            const message = document.getElementById("messageInput").value;
+            socket.emit("send_message", { message: message });
+            document.getElementById("messageInput").value = "";  // Limpar o campo de entrada
+        }
+
+        // Receber mensagens do servidor
+        socket.on("message", function(data) {
+            const chatBox = document.getElementById("chatBox");
+            const newMessage = document.createElement("div");
+            newMessage.innerHTML = `<strong>${data.user}:</strong> ${data.message}`;
+            chatBox.appendChild(newMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;  // Rolagem automática para o fundo
+        });
+    </script>
+</head>
+<body>
+    <h1>Bem-vindo ao Dashboard!</h1>
+    <p>Olá, {{ session['user'] }}! Você está logado com sucesso.</p>
+
+    <!-- Chat -->
+    <div id="chatBox" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
+        <!-- Mensagens serão adicionadas aqui -->
+    </div>
+
+    <div>
+        <input type="text" id="messageInput" placeholder="Digite uma mensagem..." />
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <a href="{{ url_for('logout') }}">Sair</a>
+</body>
+</html>

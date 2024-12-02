@@ -1,0 +1,49 @@
+<%- include('layout') %>
+<h1>Autores</h1>
+
+<!-- Formulário de criação de autor -->
+<h2>Criar Autor</h2>
+<form action="/criar-autor" method="POST">
+    <label for="quantidade_obra">Quantidade de Obras:</label>
+    <input type="number" name="quantidade_obra" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" required><br>
+
+    <label for="senha">Senha:</label>
+    <input type="password" name="senha" required><br>
+
+    <button type="submit">Criar Autor</button>
+</form>
+
+<h2>Lista de Autores</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Quantidade de Obras</th>
+            <th>Email</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% autores.forEach(autor => { %>
+            <tr>
+                <td><%= autor.quantidade_obra %></td>
+                <td><%= autor.email %></td>
+                <td>
+                    <!-- Formulário de edição -->
+                    <form action="/editar-autor" method="POST">
+                        <input type="hidden" name="id" value="<%= autor.id %>">
+                        <input type="number" name="quantidade_obra" value="<%= autor.quantidade_obra %>" required>
+                        <input type="email" name="email" value="<%= autor.email %>" required>
+                        <input type="password" name="senha" value="<%= autor.senha %>" required>
+                        <button type="submit">Editar</button>
+                    </form>
+
+                    <!-- Botão de exclusão -->
+                    <a href="/deletar-autor/<%= autor.id %>">Deletar</a>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat com {{ user_email }}</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        #chat {
+            height: 400px;
+            width: 100%;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        #message_input {
+            width: 80%;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat com {{ user_email }}</h1>
+    <div id="chat">
+        <!-- As mensagens serão exibidas aqui -->
+        {% for message in messages %}
+            <p><strong>{{ message.sender }}:</strong> {{ message.message }}</p>
+        {% endfor %}
+    </div>
+
+    <input type="text" id="message_input" placeholder="Digite sua mensagem...">
+    <button onclick="sendMessage()">Enviar</button>
+
+    <script>
+        var socket = io.connect("http://localhost:5000");
+        var sender = "{{ session['user'] }}";
+        var receiver = "{{ user_email }}";
+
+        // Função para enviar a mensagem
+        function sendMessage() {
+            var message = document.getElementById("message_input").value;
+            if (message.trim() === "") return;  // Evitar envio de mensagens vazias
+
+            // Enviar a mensagem via Socket.IO
+            socket.emit("send_message", { sender: sender, receiver: receiver, message: message });
+
+            // Limpar o campo de mensagem após enviar
+            document.getElementById("message_input").value = "";
+        }
+
+        // Ouvir o evento de recebimento da mensagem e atualizar o chat
+        socket.on("receive_message", function(data) {
+            var chatDiv = document.getElementById("chat");
+
+            // Adicionar a nova mensagem ao chat
+            chatDiv.innerHTML += `<p><strong>${data.sender}:</strong> ${data.message}</p>`;
+            
+            // Manter o scroll no final para ver as mensagens mais recentes
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        });
+
+        // Ouvir o evento "clear_chat" para limpar o chat
+        socket.on("clear_chat", function(data) {
+            var chatDiv = document.getElementById("chat");
+
+            // Limpar todas as mensagens no chat
+            chatDiv.innerHTML = `<p><strong>Admin:</strong> ${data.message}</p>`;
+
+            // Manter o scroll no final após limpar
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        });
+
+        // Ajustar o scroll para sempre ir para o final ao carregar a página
+        window.onload = function() {
+            var chatDiv = document.getElementById("chat");
+            chatDiv.scrollTop = chatDiv.scrollHeight;  // Rolagem para o final ao carregar a página
+        }
+    </script>
+</body>
+</html>

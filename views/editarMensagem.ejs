@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Mensagem</title>
+</head>
+<body>
+    <h1>Editar Mensagem</h1>
+    <form action="/mensagens/editar/<%= mensagem.id %>" method="POST">
+        <div>
+            <label for="sender_name">Nome do Remetente:</label>
+            <input type="text" id="sender_name" name="sender_name" value="<%= mensagem.sender_name %>" required>
+        </div>
+        <div>
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" required><%= mensagem.message %></textarea>
+        </div>
+        <div>
+            <button type="submit">Salvar Alterações</button>
+        </div>
+    </form>
+    <a href="/mensagens">Voltar</a>
+</body>
+</html>

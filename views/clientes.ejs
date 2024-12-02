@@ -1,0 +1,50 @@
+<h1>Cadastro de Clientes</h1>
+<form action="/clientes/criar" method="POST">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" required>
+
+    <label for="cep">CEP:</label>
+    <input type="text" id="cep" name="cep">
+
+    <label for="cpf">CPF:</label>
+    <input type="text" id="cpf" name="cpf" required>
+
+    <button type="submit">Cadastrar Cliente</button>
+</form>
+
+<h2>Clientes Cadastrados</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (clientes && clientes.length > 0) { %>
+            <% clientes.forEach(cliente => { %>
+                <tr>
+                    <td><%= cliente.nome %></td>
+                    <td><%= cliente.email %></td>
+                    <td><%= cliente.cpf %></td>
+                    <td>
+                        <a href="/clientes/editar/<%= cliente.id %>">Editar</a> | 
+                        <a href="/clientes/deletar/<%= cliente.id %>">Deletar</a>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="4">Nenhum cliente cadastrado.</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+<h1>Editar Registro</h1>
+<form action="/registros/editar/<%= registro.id %>" method="POST">
+    <label for="venda_id">Venda ID:</label>
+    <input type="number" id="venda_id" name="venda_id" value="<%= registro.venda_id %>" required>
+
+    <label for="livro_id">Livro ID:</label>
+    <input type="number" id="livro_id" name="livro_id" value="<%= registro.livro_id %>" required>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" name="quantidade" value="<%= registro.quantidade %>" required>
+
+    <label for="valor_total">Valor Total:</label>
+    <input type="number" step="0.01" id="valor_total" name="valor_total" value="<%= registro.valor_total %>" required>
+
+    <button type="submit">Salvar Alterações</button>
+</form>

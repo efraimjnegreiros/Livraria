@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensagens</title>
+</head>
+<body>
+    <h1>Mensagens</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mensagem</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (mensagens && mensagens.length > 0) { %>
+                <% mensagens.forEach(function(mensagem) { %>
+                    <tr>
+                        <td><%= mensagem.id %></td>
+                        <td><%= mensagem.message %></td> <!-- Alterado para 'message' -->
+                        <td><%= new Date(mensagem.created_at).toLocaleString() %></td> <!-- Alterado para 'created_at' -->
+                        <td>
+                            <a href="/mensagens/editar/<%= mensagem.id %>">Editar</a> | 
+                            <a href="/mensagens/deletar/<%= mensagem.id %>">Deletar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="4">Não há mensagens para exibir.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2 class="my-4">Responder à Mensagem</h2>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="response">Sua Resposta:</label>
+        <textarea id="response" name="response" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Enviar Resposta</button>
+</form>
+
+{% endblock %}

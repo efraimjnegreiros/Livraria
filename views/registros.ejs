@@ -1,0 +1,43 @@
+<h1>Cadastro de Registros</h1>
+<form action="/registros/criar" method="POST">
+    <label for="venda_id">Venda ID:</label>
+    <input type="number" id="venda_id" name="venda_id" required>
+
+    <label for="livro_id">Livro ID:</label>
+    <input type="number" id="livro_id" name="livro_id" required>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" name="quantidade" required>
+
+    <label for="valor_total">Valor Total:</label>
+    <input type="number" step="0.01" id="valor_total" name="valor_total" required>
+
+    <button type="submit">Cadastrar Registro</button>
+</form>
+
+<h2>Registros Cadastrados</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Venda ID</th>
+            <th>Livro ID</th>
+            <th>Quantidade</th>
+            <th>Valor Total</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% registros.forEach(registro => { %>
+            <tr>
+                <td><%= registro.venda_id %></td>
+                <td><%= registro.livro_id %></td>
+                <td><%= registro.quantidade %></td>
+                <td><%= registro.valor_total %></td>
+                <td>
+                    <a href="/registros/editar/<%= registro.id %>">Editar</a> | 
+                    <a href="/registros/deletar/<%= registro.id %>">Deletar</a>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

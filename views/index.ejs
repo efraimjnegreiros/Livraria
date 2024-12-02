@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuários</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        table, th, td {
+            border: 2px solid #000000;
+            border-radius: 10px;
+            border-collapse: collapse;
+        }
+        td, th {
+            padding: 20px;
+            text-align: center;
+        }
+
+        form {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form label, form input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        form input[type="text"], form input[type="date"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 400px;
+            max-width: 90%;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px;
+        }
+
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: darkred;
+        }
+
+        #search-bar {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cadastrar Usuário</h1>
+
+    <form action="/criar-usuario" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
+
+        <label for="email">Data de Nascimento:</label>
+        <input type="date" id="email" name="data_aniversario" required>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <input type="text" id="search-bar" placeholder="Pesquisar usuário por nome..." onkeyup="searchUser()">
+
+    <h2>Usuários Cadastrados</h2>
+    <table id="userTable">
+        <tr>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>Atualizar</th>
+            <th>Deletar</th>
+        </tr>
+        <% usuarios.forEach(usuario => { %>
+            <tr>
+                <td><%= usuario.nome %></td>
+                <td><%= usuario.data_aniversario %></td>
+                <td><a href="#" onclick="openModal('<%= usuario.id %>', '<%= usuario.nome %>', '<%= usuario.data_aniversario %>')">Editar</a></td>
+                <td><a href="/deletar-usuario/<%= usuario.id %>">Deletar</a></td>
+            </tr>
+        <% }) %>
+    </table>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Editar Usuário</h2>
+            <form id="editForm" action="/editar-usuario" method="POST">
+                <input type="hidden" id="editId" name="id">
+
+                <label for="editNome">Nome:</label>
+                <input type="text" id="editNome" name="nome" required>
+
+                <label for="editEmail">Data de Nascimento:</label>
+                <input type="date" id="editEmail" name="data_aniversario" required>
+
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <a href='/casamento'><p>Aniversarios de Casamento</p></a>
+    <a href='https://app-flask-03ir.onrender.com'><p>Aniversariantes da Semana</p></a>
+
+    <script>
+        function openModal(id, nome, data_aniversario) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editNome').value = nome;
+            document.getElementById('editEmail').value = data_aniversario;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function openDateModal() {
+            document.getElementById('dateModal').style.display = 'block';
+        }
+
+        function closeDateModal() {
+            document.getElementById('dateModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) {
+                closeModal();
+            }
+            if (event.target == document.getElementById('dateModal')) {
+                closeDateModal();
+            }
+        }
+
+        function searchUser() {
+            let input = document.getElementById('search-bar').value.toLowerCase();
+            let rows = document.querySelectorAll('#userTable tr:not(:first-child)');
+            rows.forEach(row => {
+                let nome = row.cells[0].textContent.toLowerCase();
+                row.style.display = nome.includes(input) ? '' : 'none';
+            });
+        }
+
+        function filterByDate(event) {
+            event.preventDefault();
+            let startDate = new Date(document.getElementById('startDate').value);
+            let endDate = new Date(document.getElementById('endDate').value);
+            let rows = document.querySelectorAll('#userTable tr:not(:first-child)');
+            
+            rows.forEach(row => {
+                let dataAniversario = new Date(row.cells[1].textContent);
+                row.style.display = (dataAniversario >= startDate && dataAniversario <= endDate) ? '' : 'none';
+            });
+
+            closeDateModal();
+        }
+    </script>
+
+</body>
+</html>

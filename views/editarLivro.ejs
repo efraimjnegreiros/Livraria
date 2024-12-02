@@ -1,0 +1,19 @@
+<h1>Editar Livro</h1>
+<form action="/livros/editar/<%= livro.id %>" method="POST">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="<%= livro.nome %>" required>
+
+    <label for="autor">Autor:</label>
+    <input type="text" id="autor" name="autor" value="<%= livro.autor %>" required>
+
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao"><%= livro.descricao %></textarea>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" name="quantidade" value="<%= livro.quantidade %>" required>
+
+    <label for="preco">Preço:</label>
+    <input type="number" step="0.01" id="preco" name="preco" value="<%= livro.preco %>" required>
+
+    <button type="submit">Salvar Alterações</button>
+</form>

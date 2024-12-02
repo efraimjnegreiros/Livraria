@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Livros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1, h2 {
+            margin: 0;
+            padding: 0;
+        }
+        .book-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .book {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .book img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 8px;
+        }
+        .book h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+        .book p {
+            font-size: 14px;
+            color: #777;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        /* Estilos para a barra de navegação */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de Navegação -->
+    <div class="navbar">
+        <a href="{{ url_for('store') }}">Loja</a> <!-- Link para a Loja -->
+        <a href="{{ url_for('cart') }}">Carrinho</a> <!-- Link para o Carrinho -->
+        <a href="{{ url_for('logout') }}">Logout</a> <!-- Link para o Logout -->
+        <a href="http://127.0.0.1:5000/login">Contact</a> <!-- Link para o Logout -->
+    </div>
+
+    <header>
+        <h1>Bem-vindo à Loja de Livros</h1>
+        <p>Olá, {{ nome }}!</p> <!-- Exibe o nome do usuário -->
+    </header>
+
+    <h2>Livros Disponíveis</h2>
+    <div class="book-container">
+        {% for livro in livros %}
+        <div class="book">
+            <img src="{{ livro['imagem_url'] }}" alt="{{ livro['nome'] }}">
+            <h3>{{ livro['nome'] }}</h3>
+            <p>Preço: R$ {{ livro['preco'] }}</p>
+            <p>Vendido por: {{ livro['livraria_nome'] }}</p>
+            <form action="{{ url_for('add_to_cart', livro_id=livro['id']) }}" method="POST">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" name="quantidade" value="1" min="1" required>
+                <button class="button" type="submit">Adicionar ao Carrinho</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

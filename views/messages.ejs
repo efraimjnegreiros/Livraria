@@ -1,0 +1,63 @@
+<%- include('layout') %>
+<h1>Mensagens</h1>
+
+<!-- Formulário de criação de mensagem -->
+<h2>Criar Mensagem</h2>
+<form action="/criar-message" method="POST">
+    <label for="sender_id">ID do Remetente:</label>
+    <input type="number" name="sender_id" required><br>
+
+    <label for="receiver_id">ID do Destinatário:</label>
+    <input type="number" name="receiver_id" required><br>
+
+    <label for="message">Mensagem:</label>
+    <textarea name="message" required></textarea><br>
+
+    <label for="type">Tipo:</label>
+    <select name="type" required>
+        <option value="text">Texto</option>
+        <option value="image">Imagem</option>
+    </select><br>
+
+    <button type="submit">Criar Mensagem</button>
+</form>
+
+<h2>Lista de Mensagens</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Remetente</th>
+            <th>Destinatário</th>
+            <th>Mensagem</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% messages.forEach(message => { %>
+            <tr>
+                <td><%= message.sender_id %></td>
+                <td><%= message.receiver_id %></td>
+                <td><%= message.message %></td>
+                <td><%= message.type %></td>
+                <td>
+                    <!-- Formulário de edição -->
+                    <form action="/editar-message" method="POST">
+                        <input type="hidden" name="id" value="<%= message.id %>">
+                        <input type="number" name="sender_id" value="<%= message.sender_id %>" required>
+                        <input type="number" name="receiver_id" value="<%= message.receiver_id %>" required>
+                        <textarea name="message" required><%= message.message %></textarea>
+                        <select name="type" required>
+                            <option value="text" <%= message.type === 'text' ? 'selected' : '' %>>Texto</option>
+                            <option value="image" <%= message.type === 'image' ? 'selected' : '' %>>Imagem</option>
+                        </select>
+                        <button type="submit">Editar</button>
+                    </form>
+
+                    <!-- Botão de exclusão -->
+                    <a href="/deletar-message/<%= message.id %>">Deletar</a>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
